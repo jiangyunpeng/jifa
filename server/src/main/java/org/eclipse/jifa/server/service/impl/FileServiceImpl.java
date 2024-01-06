@@ -176,7 +176,7 @@ public class FileServiceImpl extends ConfigurationAccessor implements FileServic
     @Override
     public long handleTransferRequest(FileTransferRequest request) {
         mustNotBe(ELASTIC_WORKER);
-
+        //如果当前是master，并且STATIC，直接转发http给worker
         if (isMaster() && getSchedulingStrategy() == SchedulingStrategy.STATIC) {
             StaticWorkerEntity worker = workerService.asStaticWorkerService().selectForFileTransferRequest(request);
             return workerService.sendRequestAndBlock(worker,
@@ -215,7 +215,7 @@ public class FileServiceImpl extends ConfigurationAccessor implements FileServic
     @Override
     public long handleUploadRequest(FileType type, MultipartFile file) throws Throwable {
         mustNotBe(ELASTIC_WORKER);
-
+        //如果当前是master，并且STATIC，直接转发http给worker
         if (isMaster() && getSchedulingStrategy() == SchedulingStrategy.STATIC) {
             StaticWorkerEntity worker = workerService.asStaticWorkerService().selectForFileUpload(type, file);
             return workerService.asStaticWorkerService().handleUploadRequest(worker, type, file);
@@ -223,13 +223,13 @@ public class FileServiceImpl extends ConfigurationAccessor implements FileServic
 
         String uniqueName = generateFileUniqueName();
         String originalName = file.getOriginalFilename();
-        long size = storageService.handleUpload(type, file, uniqueName);
+        long size = storageService.handleUpload(type, file, uniqueName);//貌似保存在本地
 
         FileStaticWorkerBind bind = isStaticWorker() ? new FileStaticWorkerBind() : null;
         if (bind != null) {
             bind.setStaticWorker(currentStaticWorker.getEntity());
         }
-
+        //文件信息保存到数据库
         return transactionTemplate.execute(status -> {
             FileEntity newFile = new FileEntity();
             newFile.setUniqueName(uniqueName);

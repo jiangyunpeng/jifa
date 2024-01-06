@@ -25,7 +25,7 @@ import org.eclipse.jifa.hda.api.SearchPredicate;
 import org.eclipse.jifa.hda.api.SearchType;
 import org.eclipse.jifa.hda.api.SortTableGenerator;
 import org.eclipse.mat.SnapshotException;
-import org.eclipse.mat.hprof.extension.HprofPreferencesAccess;
+//import org.eclipse.mat.hprof.extension.HprofPreferencesAccess;
 import org.eclipse.mat.internal.snapshot.SnapshotQueryContext;
 import org.eclipse.mat.parser.model.ClassImpl;
 import org.eclipse.mat.parser.model.XClassHistogramRecord;
@@ -1955,12 +1955,12 @@ public class HeapDumpAnalyzerImpl implements HeapDumpAnalyzer {
                     $(() ->
                       {
                           try {
-                              HprofPreferencesAccess.setStrictness(finalOptions.get("strictness"));
+                              //HprofPreferencesAccess.setStrictness(finalOptions.get("strictness"));
                               return SnapshotFactory.openSnapshot(path.toFile(),
                                                                   finalOptions,
                                                                   new ProgressListenerImpl(listener));
                           } finally {
-                              HprofPreferencesAccess.setStrictness(null);
+                              //HprofPreferencesAccess.setStrictness(null);
                           }
                       })
             ));

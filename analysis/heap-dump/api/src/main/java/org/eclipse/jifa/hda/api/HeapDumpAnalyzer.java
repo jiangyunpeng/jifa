@@ -34,7 +34,7 @@ public interface HeapDumpAnalyzer {
 
     Map<String, String> getSystemProperties();
 
-    List<Overview.BigObject> getBiggestObjects();
+    List<Overview.BigObject> getBiggestObjects();//返回最大对象
 
     @ApiMeta(aliases = "object")
     JavaObject getObjectInfo(int objectId);

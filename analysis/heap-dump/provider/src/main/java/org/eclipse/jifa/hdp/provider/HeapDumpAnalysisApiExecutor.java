@@ -100,7 +100,7 @@ public class HeapDumpAnalysisApiExecutor extends AbstractApiExecutor<HeapDumpAna
 
             config.put(EquinoxLocations.PROP_INSTANCE_AREA_DEFAULT, osgiWorkspace);
             config.put(Location.CONFIGURATION_AREA_TYPE, osgiConfiguration);
-
+            //osgi
             Framework framework = ServiceLoader.load(FrameworkFactory.class).iterator().next().newFramework(config);
             framework.start();
 

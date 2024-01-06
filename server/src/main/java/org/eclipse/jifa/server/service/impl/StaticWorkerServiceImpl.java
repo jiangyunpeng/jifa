@@ -99,7 +99,7 @@ public class StaticWorkerServiceImpl extends AbstractWorkerServiceImpl implement
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        //发送http请求给worker
         UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder()
                                                               .scheme("http")
                                                               .host(worker.getHostAddress())

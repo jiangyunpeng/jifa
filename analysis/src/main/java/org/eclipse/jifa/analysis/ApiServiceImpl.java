@@ -68,7 +68,7 @@ public class ApiServiceImpl implements ApiService {
         Validate.notNull(namespace, "namespace must not be null");
         Validate.notNull(api, "api must not be null");
 
-        ApiExecutor executor = this.executors.get(namespace);
+        ApiExecutor executor = this.executors.get(namespace);//namespace按照heap、gclog区分
         Validate.notNull(executor, () -> "Unsupported namespace: " + namespace);
         return executor.execute(new ExecutionContext(target, api, arguments));
     }

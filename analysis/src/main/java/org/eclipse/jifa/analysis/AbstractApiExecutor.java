@@ -92,7 +92,7 @@ public abstract class AbstractApiExecutor<Analyzer> implements ApiExecutor {
 
     @Override
     public final CompletableFuture<?> execute(ExecutionContext context) {
-
+        //通过api得到对应的method，HeapDumpAnalyzer上的@ApiMeta
         Method method = apiMethodMap.get(context.api());
 
         if (method == null) {
@@ -106,6 +106,7 @@ public abstract class AbstractApiExecutor<Analyzer> implements ApiExecutor {
                     : buildAnalyzer(context.target(), Collections.emptyMap());
             return receiver.thenApplyAsync(r -> {
                 try {
+                    //调用Analyzer的方法并返回结果
                     return checkApiReturnValue(method.invoke(r, context.arguments()));
                 } catch (RuntimeException re) {
                     throw re;
@@ -233,6 +234,7 @@ public abstract class AbstractApiExecutor<Analyzer> implements ApiExecutor {
                     Analyzer r = cachedAnalyzer.getIfPresent(target);
                     if (r == null) {
                         ProgressListener listener = this.buildingAnalyzerListeners.get(target);
+                        //创建Analyzer，加入到cachedAnalyzer
                         r = buildAnalyzer(target, options, listener != null ? listener : NoOpProgressListener);
                         cachedAnalyzer.put(target, r);
                     }

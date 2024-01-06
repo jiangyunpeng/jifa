@@ -102,9 +102,9 @@ public class AnalysisApiServiceImpl extends ConfigurationAccessor implements Ana
     public final CompletableFuture<?> invoke(AnalysisApiRequest request) {
         FileEntity file = fileService.getFileByUniqueName(request.target(), FileType.getByApiNamespace(request.namespace()));
 
-        if (isMaster()) {
+        if (isMaster()) {//如果当前是master，转发请求给worker
             assert workerService != null;
-            WorkerEntity worker = workerService.resolveForAnalysisApiRequest(file);
+            WorkerEntity worker = workerService.resolveForAnalysisApiRequest(file);//根据文件ID确定worker,数据库会记录
             return workerService.sendRequest(worker, createPostRequest(Constant.HTTP_ANALYSIS_API_MAPPING, request, byte[].class));
         }
         String namespace = request.namespace();
@@ -121,6 +121,7 @@ public class AnalysisApiServiceImpl extends ConfigurationAccessor implements Ana
         }
 
         try {
+            //执行对应的命令
             return apiService.execute(targetPath, namespace, api, args)
                              .whenComplete((r, t) -> {
                                  if (currentElasticWorker != null) {

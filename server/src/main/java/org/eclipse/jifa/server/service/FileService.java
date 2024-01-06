@@ -34,10 +34,12 @@ public interface FileService {
 
     void deleteById(long fileId);
 
+    //处理从外部存储传输
     long handleTransferRequest(FileTransferRequest request) throws Throwable;
 
     FileTransferProgress getTransferProgress(long transferringFileId);
 
+    //处理文件上传
     long handleUploadRequest(FileType type, MultipartFile file) throws Throwable;
 
     String handleLocalFileRequest(FileType type, Path path) throws IOException;
